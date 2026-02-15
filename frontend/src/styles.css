@@ -1,7 +1,108 @@
-body { font-family: Arial, sans-serif; margin: 0; background: #f3f4f6; }
-.container { max-width: 980px; margin: auto; padding: 16px; }
-section { background: white; border-radius: 8px; padding: 12px; margin: 12px 0; }
-input, button { margin: 4px; padding: 8px; }
-table { width: 100%; border-collapse: collapse; }
-td, th { border-bottom: 1px solid #ddd; text-align: left; padding: 6px; }
-@media (max-width: 768px) { table, thead, tbody, tr, td, th { font-size: 12px; } }
+:root {
+  --ametus-navy: #0f3557;
+  --ametus-blue: #1c5f96;
+  --ametus-light: #eef4fa;
+  --ametus-accent: #2ca6d7;
+  --ametus-border: #d6e3f1;
+  --text-main: #13324b;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: var(--text-main);
+  background: linear-gradient(145deg, #f7fbff 0%, var(--ametus-light) 55%, #e4edf7 100%);
+}
+
+.container {
+  max-width: 980px;
+  margin: 24px auto;
+  padding: 20px;
+}
+
+h1 {
+  margin-top: 0;
+  color: var(--ametus-navy);
+}
+
+section {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  margin: 14px 0;
+  border: 1px solid var(--ametus-border);
+  box-shadow: 0 6px 20px rgba(15, 53, 87, 0.08);
+}
+
+.auth-card {
+  max-width: 420px;
+  margin: 60px auto;
+  background: #fff;
+  border: 1px solid var(--ametus-border);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 12px 28px rgba(15, 53, 87, 0.14);
+}
+
+.auth-card h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.auth-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+input, button {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--ametus-border);
+  font-size: 14px;
+}
+
+input:focus {
+  outline: 2px solid rgba(44, 166, 215, 0.35);
+  border-color: var(--ametus-accent);
+}
+
+button {
+  background: linear-gradient(180deg, var(--ametus-blue), var(--ametus-navy));
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover {
+  filter: brightness(1.05);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background: #f2f7fc;
+}
+
+td, th {
+  border-bottom: 1px solid var(--ametus-border);
+  text-align: left;
+  padding: 8px;
+}
+
+.status {
+  margin: 0 0 8px;
+  color: #2c5678;
+}
+
+@media (max-width: 768px) {
+  .container { margin: 8px auto; padding: 12px; }
+  table, thead, tbody, tr, td, th { font-size: 12px; }
+}
