@@ -1,0 +1,10 @@
+node_modules
+.env
+backend/dev.db
+backend/dev.db-journal
+backend/dist
+frontend/dist
+playwright-report
+test-results
+uploads/articles/**
+!uploads/articles/.gitkeep
