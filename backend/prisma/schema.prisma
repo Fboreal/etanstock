@@ -1,0 +1,176 @@
+generator client {
+  provider   = "prisma-client-js"
+  engineType = "client"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  GESTIONNAIRE
+  DEMANDEUR
+}
+
+enum CommandeStatut {
+  BROUILLON
+  SOUMISE
+  SORTIE
+  CLOTUREE
+}
+
+enum DestinationType {
+  AGENCE
+  CHANTIER
+}
+
+enum MouvementType {
+  ENTREE
+  SORTIE
+  TRANSFERT
+  AJUSTEMENT
+}
+
+model User {
+  id           Int             @id @default(autoincrement())
+  email        String          @unique
+  passwordHash String
+  nom          String
+  role         UserRole
+  actif        Boolean         @default(true)
+  commandes    Commande[]      @relation("DemandeurCommandes")
+  sorties      Commande[]      @relation("SortieCommandes")
+  mouvements   MouvementStock[]
+}
+
+model Fournisseur {
+  id       Int       @id @default(autoincrement())
+  nom      String
+  actif    Boolean   @default(true)
+  articles Article[]
+}
+
+model Categorie {
+  id       Int       @id @default(autoincrement())
+  nom      String
+  actif    Boolean   @default(true)
+  articles Article[]
+}
+
+model Agence {
+  id        Int        @id @default(autoincrement())
+  code      String     @unique
+  nom       String
+  actif     Boolean    @default(true)
+  chantiers Chantier[]
+}
+
+model Chantier {
+  id        Int      @id @default(autoincrement())
+  code      String   @unique
+  nom       String
+  agenceId  Int?
+  actif     Boolean  @default(true)
+  agence    Agence?  @relation(fields: [agenceId], references: [id])
+}
+
+model Article {
+  id                Int             @id @default(autoincrement())
+  code              String          @unique
+  designation       String
+  fournisseurId     Int
+  uniteGestion      String
+  multipleCommande  Int
+  categorieId       Int
+  prixHt            Decimal         @db.Decimal(10, 2)
+  photoPath         String?
+  actif             Boolean         @default(true)
+  fournisseur       Fournisseur     @relation(fields: [fournisseurId], references: [id])
+  categorie         Categorie       @relation(fields: [categorieId], references: [id])
+  stocks            Stock[]
+  lignesCommande    LigneCommande[]
+  mouvements        MouvementStock[]
+  allocations       AllocationPicking[]
+}
+
+model Emplacement {
+  id            Int                @id @default(autoincrement())
+  code          String             @unique
+  allee         String
+  niveau        Int
+  travee        Int
+  actif         Boolean            @default(true)
+  stocks        Stock[]
+  sourceMoves   MouvementStock[]   @relation("MoveSource")
+  destMoves     MouvementStock[]   @relation("MoveDest")
+  allocations   AllocationPicking[]
+}
+
+model Stock {
+  id            Int         @id @default(autoincrement())
+  articleId     Int
+  emplacementId Int
+  quantite      Int
+  article       Article     @relation(fields: [articleId], references: [id])
+  emplacement   Emplacement @relation(fields: [emplacementId], references: [id])
+
+  @@unique([articleId, emplacementId])
+}
+
+model Commande {
+  id              Int                 @id @default(autoincrement())
+  numero          String              @unique
+  dateCreation    DateTime            @default(now())
+  statut          CommandeStatut      @default(BROUILLON)
+  destinationType DestinationType
+  destinationId   Int
+  demandeurUserId Int
+  commentaire     String?
+  dateSortie      DateTime?
+  sortieParUserId Int?
+  demandeur       User                @relation("DemandeurCommandes", fields: [demandeurUserId], references: [id])
+  sortiePar       User?               @relation("SortieCommandes", fields: [sortieParUserId], references: [id])
+  lignes          LigneCommande[]
+  allocations     AllocationPicking[]
+}
+
+model LigneCommande {
+  id               Int      @id @default(autoincrement())
+  commandeId       Int
+  articleId        Int
+  quantiteDemandee Int
+  commentaire      String?
+  commande         Commande  @relation(fields: [commandeId], references: [id])
+  article          Article   @relation(fields: [articleId], references: [id])
+}
+
+model AllocationPicking {
+  id            Int        @id @default(autoincrement())
+  commandeId    Int
+  articleId     Int
+  emplacementId Int
+  quantite      Int
+  commande      Commande   @relation(fields: [commandeId], references: [id])
+  article       Article    @relation(fields: [articleId], references: [id])
+  emplacement   Emplacement @relation(fields: [emplacementId], references: [id])
+}
+
+model MouvementStock {
+  id                   Int            @id @default(autoincrement())
+  type                 MouvementType
+  articleId            Int
+  quantite             Int
+  emplacementSourceId  Int?
+  emplacementDestId    Int?
+  refType              String?
+  refId                Int?
+  userId               Int
+  timestamp            DateTime       @default(now())
+  commentaire          String?
+  article              Article        @relation(fields: [articleId], references: [id])
+  emplacementSource    Emplacement?   @relation("MoveSource", fields: [emplacementSourceId], references: [id])
+  emplacementDest      Emplacement?   @relation("MoveDest", fields: [emplacementDestId], references: [id])
+  user                 User           @relation(fields: [userId], references: [id])
+}
