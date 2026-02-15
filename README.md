@@ -1,4 +1,4 @@
-# LudoCommande (V1)
+# EtandStock (V1)
 
 Monorepo TypeScript pour la gestion d'un catalogue, des stocks par emplacement, commandes internes, mouvements et picking automatique.
 
