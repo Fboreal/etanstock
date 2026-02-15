@@ -33,7 +33,7 @@ export function App() {
   if (!user)
     return (
       <main className="container">
-        <h1>LudoCommande</h1>
+        <h1>EtandStock</h1>
         <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email" />
         <input value={password} onChange={(e) => setPassword(e.target.value)} placeholder="password" type="password" />
         <button onClick={login}>Login</button>
@@ -42,7 +42,7 @@ export function App() {
 
   return (
     <main className="container">
-      <h1>LudoCommande</h1>
+      <h1>EtandStock</h1>
       <p>Connecté: {user.nom} ({user.role})</p>
       <section>
         <h2>Catalogue</h2>

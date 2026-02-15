@@ -1,5 +1,5 @@
 {
-  "name": "ludocommande",
+  "name": "etandstock",
   "private": true,
   "version": "1.0.0",
   "workspaces": ["backend", "frontend"],
