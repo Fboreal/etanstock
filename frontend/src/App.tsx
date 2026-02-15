@@ -51,16 +51,28 @@ export function App() {
       <p className="status">Connecté: {user.nom} ({user.role})</p>
       <section>
         <h2>Catalogue</h2>
+      <p>Connecté: {user.nom} ({user.role})</p>
+
+      <nav aria-label="Menu principal" className="home-menu">
+        <a href="#referentiel-articles">Référentiel articles</a>
+        <a href="#gestion-emplacements">Gestion des emplacements</a>
+        <a href="#gestion-commandes">Gestion des commandes</a>
+      </nav>
+
+      <section id="referentiel-articles">
+        <h2>Référentiel articles</h2>
         <table><thead><tr><th>Code</th><th>Désignation</th><th>Prix HT</th><th>Multiple</th><th>Photo</th></tr></thead><tbody>
           {articles.map((a) => <tr key={a.id}><td>{a.code}</td><td>{a.designation}</td><td>{a.prixHt}€</td><td>{a.multipleCommande}</td><td>{a.photoPath ? <img src={`http://localhost:3001/uploads/${a.photoPath}`} width={40} /> : '-'}</td></tr>)}
         </tbody></table>
       </section>
-      <section>
-        <h2>Emplacements</h2>
+
+      <section id="gestion-emplacements">
+        <h2>Gestion des emplacements</h2>
         <ul>{emplacements.map((e) => <li key={e.id}>{e.code} (N{e.niveau}/T{e.travee})</li>)}</ul>
       </section>
-      <section>
-        <h2>Commandes internes</h2>
+
+      <section id="gestion-commandes">
+        <h2>Gestion des commandes</h2>
         <button onClick={async () => { await api('/commandes', { method: 'POST', body: JSON.stringify({ destinationType: 'AGENCE', destinationId: 1 }) }); await load(); }}>Créer brouillon agence</button>
         <ul>{commandes.map((c) => <li key={c.id}>{c.numero} - {c.statut} ({c.lignes.length} lignes)</li>)}</ul>
       </section>
