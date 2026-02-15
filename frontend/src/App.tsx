@@ -32,18 +32,23 @@ export function App() {
 
   if (!user)
     return (
-      <main className="container">
-        <h1>EtandStock</h1>
-        <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email" />
-        <input value={password} onChange={(e) => setPassword(e.target.value)} placeholder="password" type="password" />
-        <button onClick={login}>Login</button>
+      <main className="container auth-layout">
+        <section className="auth-card">
+          <p className="auth-kicker">AMETUS STYLE</p>
+          <h1>EtandStock</h1>
+          <div className="auth-fields">
+            <input value={email} onChange={(e) => setEmail(e.target.value)} placeholder="email" />
+            <input value={password} onChange={(e) => setPassword(e.target.value)} placeholder="password" type="password" />
+            <button onClick={login}>Se connecter</button>
+          </div>
+        </section>
       </main>
     );
 
   return (
     <main className="container">
       <h1>EtandStock</h1>
-      <p>Connecté: {user.nom} ({user.role})</p>
+      <p className="status">Connecté: {user.nom} ({user.role})</p>
       <section>
         <h2>Catalogue</h2>
         <table><thead><tr><th>Code</th><th>Désignation</th><th>Prix HT</th><th>Multiple</th><th>Photo</th></tr></thead><tbody>
